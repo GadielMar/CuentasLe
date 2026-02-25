@@ -62,7 +62,7 @@ public static class SwaggerExtensions
                 var descriptions = app.DescribeApiVersions();
                 foreach (var description in descriptions)
                 {
-                    var url = $"/swagger/{description.GroupName}/swagger.json";
+                    var url = $"./{description.GroupName}/swagger.json";
                     var name = $"{apiTitle} {description.GroupName.ToUpperInvariant()}";
                     options.SwaggerEndpoint(url, name);
                 }

@@ -16,7 +16,7 @@ public abstract class RepositoryBase
             string spName,
             string databaseName,
             DynamicParameters parameters = null,
-            int? timeout = 60
+            int? timeout = 90
             )
     {
         using var connection = await _connectionFactory.CreateConnectionAsync(databaseName);
@@ -26,7 +26,8 @@ public abstract class RepositoryBase
             var result = await connection.QueryAsync<T>(
             spName,
             parameters,
-            commandType: CommandType.StoredProcedure
+            commandType: CommandType.StoredProcedure,
+            commandTimeout: timeout
         );
 
             return result.ToList();
@@ -41,7 +42,7 @@ public abstract class RepositoryBase
         string spName,
         string databaseName,
         object parameters = null,
-        int? timeout = 60)
+        int? timeout = 90)
     {
         using var connection = await _connectionFactory.CreateConnectionAsync(databaseName);
 
@@ -50,7 +51,8 @@ public abstract class RepositoryBase
             return await connection.QueryAsync<T>(
                 spName,
                 parameters,
-                commandType: CommandType.StoredProcedure
+                commandType: CommandType.StoredProcedure,
+                commandTimeout: timeout
             );
         }
         catch (Exception ex) when (ex is not TimeoutException && ex is not BaseDeDatosConexionException)
