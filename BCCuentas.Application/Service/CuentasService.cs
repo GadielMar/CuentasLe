@@ -17,7 +17,7 @@ public class CuentasService : ICuentasService
     {
         //// Validación 401
         //if (string.IsNullOrWhiteSpace(dto.ValorBusqueda))
-        //    throw new BusinessException(ErroresConstancias.DatosRequeridosFaltantes);
+        //    throw new BusinessException(ErroresConstancias.DatosRequeridosFaltantes); <---
 
         //return await _repository.ObtenerPromedioCuenta (command.pchcuenta);
         return await _repository.ObtenerPromediosREPO(command.cuenta);
