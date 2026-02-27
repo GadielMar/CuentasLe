@@ -1,0 +1,51 @@
+name: Control de Calidad .NET
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'zulu'
+
+      - name: Configurar .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Instalar SonarScanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Restaurar dependencias
+        run: dotnet restore
+
+      - name: Iniciar Análisis de SonarCloud
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet-sonarscanner begin /k:"GadielMar_Monitor" /o:"gadielmar" /d:sonar.login="${{ env.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+
+      - name: Compilación (Build)
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Ejecutar Pruebas Unitarias (Tests)
+        run: dotnet test --no-build --verbosity normal
+
+      - name: Finalizar Análisis y Enviar Datos
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: dotnet-sonarscanner end /d:sonar.login="${{ env.SONAR_TOKEN }}"

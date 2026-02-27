@@ -1,0 +1,13 @@
+# Reglas de Diseño para Mantenibilidad
+[*.cs]
+# Evitar Fat Interfaces: Sugiere un máximo de 5-7 métodos
+dotnet_diagnostic.CA1010.severity = warning
+# Evitar clases demasiado grandes
+dotnet_diagnostic.CA1501.severity = warning
+# Forzar el uso de interfaces en lugar de clases concretas (Inyección de Dependencias)
+dotnet_diagnostic.CA1812.severity = suggestion
+
+# Estándares de Nomenclatura (Buenas Prácticas)
+dotnet_naming_rule.interface_should_be_begun_with_i.symbols = interface
+dotnet_naming_rule.interface_should_be_begun_with_i.style = begun_with_i
+dotnet_naming_rule.interface_should_be_begun_with_i.severity = error
